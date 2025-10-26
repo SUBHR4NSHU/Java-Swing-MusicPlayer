@@ -36,5 +36,5 @@
 <!--Screenshots (GIFs/PNGs)-->
 <h2>Screenshots</h2>
 <p align="center">
-  <img src="https://github.com/curadProgrammer/Java-Swing-MusicPlayer/blob/main/Screenshot_38.png" alt="Music Player App Screenshot">
+  <img src="Screenshot 2025-10-27 035929.png" alt="Music Player App Screenshot">
 </p>

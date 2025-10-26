@@ -64,7 +64,7 @@ public class MusicPlayerGUI extends JFrame {
         addToolbar();
 
         // load record image
-        JLabel songImage = new JLabel(loadImage("src/assets/record.png"));
+        JLabel songImage = new JLabel(loadScaledImage("src/assets/record.png", getWidth() - 20, 225));
         songImage.setBounds(0, 50, getWidth() - 20, 225);
         add(songImage);
 
@@ -343,6 +343,42 @@ public class MusicPlayerGUI extends JFrame {
 
             // returns an image icon so that our component can render the image
             return new ImageIcon(image);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        // could not find resource
+        return null;
+    }
+
+    private ImageIcon loadScaledImage(String imagePath, int width, int height){
+        try{
+            // read the image file from the given path
+            BufferedImage originalImage = ImageIO.read(new File(imagePath));
+
+            if(originalImage != null){
+                // Calculate the scaling factor to maintain aspect ratio
+                double widthRatio = (double) width / originalImage.getWidth();
+                double heightRatio = (double) height / originalImage.getHeight();
+                double ratio = Math.min(widthRatio, heightRatio);
+
+                // Calculate new dimensions
+                int newWidth = (int) (originalImage.getWidth() * ratio);
+                int newHeight = (int) (originalImage.getHeight() * ratio);
+
+                // Scale the image smoothly
+                Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+
+                // Create a new BufferedImage with the scaled image
+                BufferedImage bufferedScaledImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2d = bufferedScaledImage.createGraphics();
+                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g2d.drawImage(scaledImage, 0, 0, null);
+                g2d.dispose();
+
+                // returns a scaled image icon
+                return new ImageIcon(bufferedScaledImage);
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
